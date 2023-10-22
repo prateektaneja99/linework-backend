@@ -29,15 +29,36 @@ export async function getStore(id) {
   return rows[0];
 }
 
-export async function updateStore(id, status) {
-  const [result] = await pool.query(
-    `
-  UPDATE Store
-  SET status = ?
-  WHERE id = ?
-  `,
-    [status, id]
-  );
+export async function updateStore(id, status, start_date, end_date) {
+  if (start_date != null && start_date == Date.now) {
+    const [result] = await pool.query(
+      `
+    UPDATE Store
+    SET status = ? , start_date = ? , end_date = ?
+    WHERE id = ?
+    `,
+      ["Invisible", start_date, end_date, id]
+    );
+  } else if (start_date !== null && end_date !== null) {
+    const [result] = await pool.query(
+      `
+    UPDATE Store
+    SET status = ? , start_date = ? , end_date = ?
+    WHERE id = ?
+    `,
+      [status, start_date, end_date, id]
+    );
+  } else {
+    const [result] = await pool.query(
+      `
+    UPDATE Store
+    SET status = ? , start_date = NULL , end_date = NULL
+    WHERE id = ?
+    `,
+      [status, id]
+    );
+  }
+
   return getStore(id);
 }
 
@@ -67,6 +88,3 @@ export async function getProductsByStatus(status) {
   );
   return rows;
 }
-
-const y = await deleteStore(1);
-console.log(y);

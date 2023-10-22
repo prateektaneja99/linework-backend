@@ -1,10 +1,10 @@
 import express from "express";
 
 import {
-  getNotes,
-  getNote,
-  createNote,
+  getStores,
+  getStore,
   deleteStore,
+  updateStore,
   getProductsByStatus,
 } from "./database.js";
 
@@ -26,13 +26,15 @@ app.get("/stores/:id", async (req, res) => {
 app.delete("/store/:id", async (req, res) => {
   const id = req.params.id;
   const note = await deleteStore(id);
-  res.status(201).send(note);
+  res.status(200).send(note);
 });
 
 app.post("/store/:id", async (req, res) => {
   const id = req.params.id;
-  const status = req.body;
-  const note = await updateStore(id, status);
+  const status = req.body.status;
+  const start_date = req.body.start_date;
+  const end_date = req.body.end_date;
+  const note = await updateStore(id, status, start_date, end_date);
   res.status(200).send(note);
 });
 
