@@ -16,8 +16,5 @@ CREATE TABLE Product (
   created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO notes (title, contents)
-VALUES 
-('My First Note', 'A note about something'),
-('My Second Note', 'A note about something else');
+
 

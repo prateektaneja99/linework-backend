@@ -1,4 +1,5 @@
 import mysql from "mysql2";
+import { dateComparison } from "./cron_job.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -30,7 +31,7 @@ export async function getStore(id) {
 }
 
 export async function updateStore(id, status, start_date, end_date) {
-  if (start_date != null && start_date == Date.now) {
+  if (start_date != null && dateComparison(start_date) == 0) {
     const [result] = await pool.query(
       `
     UPDATE Store
@@ -39,7 +40,7 @@ export async function updateStore(id, status, start_date, end_date) {
     `,
       ["Invisible", start_date, end_date, id]
     );
-  } else if (start_date !== null && end_date !== null) {
+  } else if (start_date != null && end_date != null) {
     const [result] = await pool.query(
       `
     UPDATE Store

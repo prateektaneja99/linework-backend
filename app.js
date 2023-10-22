@@ -33,7 +33,9 @@ app.post("/store/:id", async (req, res) => {
   const id = req.params.id;
   const status = req.body.status;
   const start_date = req.body.start_date;
+  start_date.setHours(0, 0, 0, 0);
   const end_date = req.body.end_date;
+  end_date.setHours(0, 0, 0, 0);
   const note = await updateStore(id, status, start_date, end_date);
   res.status(200).send(note);
 });
@@ -44,7 +46,7 @@ app.get("/products/:status", async (req, res) => {
   res.status(200).send(note);
 });
 
-app.use((err, req, res, next) => {
+app.use((err, res) => {
   console.error(err.stack);
   res.status(500).send("Something broke 💩");
 });
