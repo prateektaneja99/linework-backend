@@ -4,14 +4,14 @@ USE linework_app;
 CREATE TABLE Store (
   id integer PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  status TEXT NOT NULL,
+  status VARCHAR(50) NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE Product (
   id integer PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  price float,
+  price FLOAT,
   FOREIGN KEY (store_id) REFERENCES Store(id)
   created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

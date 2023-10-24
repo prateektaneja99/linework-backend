@@ -1,9 +1,9 @@
 import mysql from "mysql2";
 import { dateComparison } from "./cron_job.js";
-
 import dotenv from "dotenv";
 dotenv.config();
 
+// Create a MySQL connection pool with parameters from environment variables
 const pool = mysql
   .createPool({
     host: process.env.MYSQL_HOST,
@@ -13,7 +13,8 @@ const pool = mysql
   })
   .promise();
 
-export async function getStores() {
+// Function to fetch and return store data with product counts
+  export async function getStores() {
   const [rows] = await pool.query(
     `
    SELECT Store.*, COUNT(Product.id) AS product_count
@@ -25,6 +26,7 @@ export async function getStores() {
   return rows;
 }
 
+// Function to fetch and return a single store by its ID
 export async function getStore(id) {
   const [rows] = await pool.query(
     `
@@ -37,6 +39,7 @@ export async function getStore(id) {
   return rows[0];
 }
 
+// Function to update a store's status and visibility dates
 export async function updateStore(id, status, start_date, end_date) {
   if (start_date != null && dateComparison(start_date) == 0) {
     await pool.query(
@@ -70,6 +73,7 @@ export async function updateStore(id, status, start_date, end_date) {
   return getStore(id);
 }
 
+// Function to delete a store and its associated products
 export async function deleteStore(id) {
   await pool.query(
     `
@@ -86,6 +90,7 @@ export async function deleteStore(id) {
   return getStores();
 }
 
+// Function to fetch and return products by their status
 export async function getProductsByStatus(status) {
   const [rows] = await pool.query(
     `

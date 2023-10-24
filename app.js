@@ -9,10 +9,16 @@ import {
   getProductsByStatus,
 } from "./database.js";
 
+// Create an instance of the Express application
 const app = express();
+
+// Use the CORS middleware to enable cross-origin requests
 app.use(cors());
+
+// Use the express.json() middleware to parse JSON requests
 app.use(express.json());
 
+// Define API routes and corresponding handlers
 app.get("/stores", async (req, res) => {
   const stores = await getStores();
   res.send(stores);
@@ -45,11 +51,13 @@ app.get("/products/:status", async (req, res) => {
   res.status(200).send(products);
 });
 
+// Error handling middleware to handle internal server errors
 app.use((err, res) => {
   console.error(err.stack);
   res.status(500).send("Internal Server Error");
 });
 
+// Start the Express server on port 8080
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
