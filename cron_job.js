@@ -2,7 +2,7 @@ import cron from "node-cron";
 import { getStores, updateStore } from "./database.js";
 
 async function updateStoreStatus() {
-  console.log("Starting cron");
+  // console.log("Starting cron");
   const storeList = await getStores();
 
   storeList.forEach(async (el) => {
@@ -21,7 +21,7 @@ async function updateStoreStatus() {
     }
   });
 
-  console.log("ending cron");
+  // console.log("ending cron");
 }
 
 cron.schedule("* * * * *", function () {
