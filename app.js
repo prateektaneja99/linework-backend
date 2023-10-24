@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 import {
   getStores,
@@ -9,46 +10,44 @@ import {
 } from "./database.js";
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 app.get("/stores", async (req, res) => {
-  const notes = await getStores();
-  res.send(notes);
+  const stores = await getStores();
+  res.send(stores);
 });
 
 app.get("/stores/:id", async (req, res) => {
   const id = req.params.id;
-  const note = await getStore(id);
-  res.send(note);
+  const store = await getStore(id);
+  res.send(store);
 });
 
 app.delete("/store/:id", async (req, res) => {
   const id = req.params.id;
-  const note = await deleteStore(id);
-  res.status(200).send(note);
+  const store = await deleteStore(id);
+  res.status(200).send(store);
 });
 
 app.post("/store/:id", async (req, res) => {
   const id = req.params.id;
   const status = req.body.status;
   const start_date = req.body.start_date;
-  start_date.setHours(0, 0, 0, 0);
   const end_date = req.body.end_date;
-  end_date.setHours(0, 0, 0, 0);
-  const note = await updateStore(id, status, start_date, end_date);
-  res.status(200).send(note);
+  const store = await updateStore(id, status, start_date, end_date);
+  res.status(200).send(store);
 });
 
 app.get("/products/:status", async (req, res) => {
   const status = req.params.status;
-  const note = await getProductsByStatus(status);
-  res.status(200).send(note);
+  const products = await getProductsByStatus(status);
+  res.status(200).send(products);
 });
 
 app.use((err, res) => {
   console.error(err.stack);
-  res.status(500).send("Something broke 💩");
+  res.status(500).send("Internal Server Error");
 });
 
 app.listen(8080, () => {

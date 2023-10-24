@@ -14,7 +14,14 @@ const pool = mysql
   .promise();
 
 export async function getStores() {
-  const [rows] = await pool.query("SELECT * FROM store");
+  const [rows] = await pool.query(
+    `
+   SELECT Store.*, COUNT(Product.id) AS product_count
+   FROM Store
+   LEFT JOIN Product ON Store.id = Product.store_id
+   GROUP BY Store.id, Store.name;
+  `
+  );
   return rows;
 }
 
@@ -32,7 +39,7 @@ export async function getStore(id) {
 
 export async function updateStore(id, status, start_date, end_date) {
   if (start_date != null && dateComparison(start_date) == 0) {
-    const [result] = await pool.query(
+    await pool.query(
       `
     UPDATE Store
     SET status = ? , start_date = ? , end_date = ?
@@ -41,7 +48,7 @@ export async function updateStore(id, status, start_date, end_date) {
       ["Invisible", start_date, end_date, id]
     );
   } else if (start_date != null && end_date != null) {
-    const [result] = await pool.query(
+    await pool.query(
       `
     UPDATE Store
     SET status = ? , start_date = ? , end_date = ?
@@ -50,7 +57,7 @@ export async function updateStore(id, status, start_date, end_date) {
       [status, start_date, end_date, id]
     );
   } else {
-    const [result] = await pool.query(
+    await pool.query(
       `
     UPDATE Store
     SET status = ? , start_date = NULL , end_date = NULL
@@ -72,7 +79,7 @@ export async function deleteStore(id) {
   );
   await pool.query(
     `
-   DELETE FROM Store WHERE id = 1;
+   DELETE FROM Store WHERE id = ?;
   `,
     [id]
   );
@@ -81,10 +88,12 @@ export async function deleteStore(id) {
 
 export async function getProductsByStatus(status) {
   const [rows] = await pool.query(
-    `SELECT Product.*
-    FROM Product
-    JOIN Store ON Store.id = Product.store_id
-    WHERE Store.status =  ? `,
+    `
+   SELECT Product.*, Store.name AS store_name
+   FROM Product
+   JOIN Store ON Store.id = Product.store_id
+   WHERE Store.status =  ? 
+  `,
     [status]
   );
   return rows;
