@@ -6,8 +6,9 @@
   "jest": {
     "transform": {}
   },
-  "main": "database.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "dev": "npx nodemon app.js",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
@@ -19,6 +20,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "moment": "^2.29.4",
     "mysql2": "^2.3.3",
     "node-cron": "^3.0.2"
   },

@@ -14,7 +14,7 @@ const pool = mysql
   .promise();
 
 // Function to fetch and return store data with product counts
-  export async function getStores() {
+export async function getStores() {
   const [rows] = await pool.query(
     `
    SELECT Store.*, COUNT(Product.id) AS product_count
@@ -41,7 +41,11 @@ export async function getStore(id) {
 
 // Function to update a store's status and visibility dates
 export async function updateStore(id, status, start_date, end_date) {
-  if (start_date != null && dateComparison(start_date) == 0) {
+  if (
+    start_date != null &&
+    end_date != null &&
+    dateComparison(start_date) == 0
+  ) {
     await pool.query(
       `
     UPDATE Store
