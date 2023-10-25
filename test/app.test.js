@@ -1,5 +1,5 @@
 import request from "supertest";
-import makeApp from "./app.js";
+import makeApp from "../app.js";
 import { jest } from "@jest/globals";
 
 const getStores = jest.fn();

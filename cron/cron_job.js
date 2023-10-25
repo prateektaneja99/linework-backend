@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { getStores, updateStore } from "./database.js";
+import { getStores, updateStore } from "../src/database.js";
 
 async function updateStoreStatus() {
   const storeList = await getStores();

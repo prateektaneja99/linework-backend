@@ -1,5 +1,5 @@
 import mysql from "mysql2";
-import { dateComparison } from "./cron_job.js";
+import { dateComparison } from "../cron/cron_job.js";
 import dotenv from "dotenv";
 dotenv.config();
 
